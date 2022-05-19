@@ -1,0 +1,368 @@
+import tkinter
+from PIL import Image, ImageTk
+
+
+root = tkinter.Tk()
+root.geometry("450x400")
+root.title("Zork Vol. 2")
+root.configure(bg="black")
+
+#### MODEL ####
+cent_map_check = False
+top_map_check = False
+left_map_check = False
+down_map_check = False
+right_map_check = False
+final_map_check = False
+
+
+#Frames - that contain all the widgets
+shooting = tkinter.Frame(root, bg = 'grey')
+cent_map = tkinter.Frame(root, bg = 'green')
+top_map = tkinter.Frame(root, bg = 'green')
+left_map = tkinter.Frame(root, bg = 'green')
+down_map = tkinter.Frame(root, bg = 'green')
+right_map = tkinter.Frame(root, bg = 'green')
+final_map = tkinter.Frame(root, bg = 'green')
+intro = tkinter.Frame(root, bg = 'blue')
+start_button = tkinter.Frame(root, bg = 'black')
+
+user = tkinter.PhotoImage(file = 'bald.png')
+terminal = tkinter.PhotoImage(file = 'zork_terminal.png')
+
+
+
+frames = [shooting, final_map, cent_map, top_map, left_map, right_map, down_map, intro, start_button] 
+
+for frame in frames:
+  frame.place(x = 10, y = 10, 
+              width = 430, height = 380)
+
+
+def start(event):
+  global name, cent_map_check
+  name = name_entry.get()
+  cent_map_check = True
+  cent_map.tkraise()
+  
+
+#MAP FRAME
+def left(event):
+  global cent_map_check, top_map_check, left_map_check, down_map_check, right_map_check, final_map_check
+  if cent_map_check == True:
+    playerX, playerY = canvas.coords(player)
+    left = playerX - 16
+    if left < 0:
+      left_map.tkraise()
+      left_canvas.moveto(player, 390, playerY + 16)
+      cent_map_check = False
+      left_map_check = True
+    else:
+      canvas.config(bg = 'dark green')
+      canvas.move(player, -5, 0)
+
+  elif top_map_check == True:
+    playerX, playerY = top_canvas.coords(player)
+    top_left = playerX - 16
+
+    if top_left < 0:
+      top_canvas.config(bg = 'red')
+    else:
+      top_canvas.config(bg = 'orange')
+      top_canvas.move(player, -5, 0)
+      
+
+  elif left_map_check == True:
+    playerX, playerY = left_canvas.coords(player)
+    left = playerX - 16
+    if left < 0:
+      left_canvas.config(bg = 'red')
+    else:
+      left_canvas.config(bg = 'purple')
+      left_canvas.move(player, -5, 0)
+
+  elif down_map_check == True:
+    playerX, playerY = down_canvas.coords(player)
+    left = playerX - 16
+    if left < 0:
+      down_canvas.config(bg = 'red')
+    else:
+      down_canvas.config(bg = 'light blue')
+      down_canvas.move(player, -5, 0)
+      
+  elif right_map_check == True:
+    playerX, playerY = right_canvas.coords(player)
+    left = playerX - 16
+    if left < 0:
+      cent_map.tkraise()
+      canvas.moveto(player, 410, playerY)
+      cent_map_check = True
+      right_map_check = False
+    else:
+      right_canvas.config(bg = 'pink')
+      right_canvas.move(player, -5, 0)
+  elif final_map_check == True:
+    playerX, playerY = final_canvas.coords(player)
+    left = playerX - 16
+    if left < 0:
+      right_map.tkraise()
+      right_canvas.moveto(player, 410, playerY)
+      final_map_check = False
+      right_map_check = True
+    else:
+      final_canvas.config(bg = 'black')
+      final_canvas.move(player, -5, 0)
+def right(event):
+  global cent_map_check, top_map_check, left_map_check, down_map_check, right_map_check, final_map_check
+  if cent_map_check == True:
+    playerX, playerY = canvas.coords(player)
+    right = playerX + 16
+    if right > 410:
+      right_map.tkraise()
+      right_canvas.moveto(player, 0, playerY)
+      cent_map_check = False
+      right_map_check = True
+    else:
+      canvas.config(bg = 'dark green')
+      canvas.move(player, 5, 0)
+  elif top_map_check == True:
+    playerX, playerY = top_canvas.coords(player)
+    right = playerX + 16
+
+    if right > 410:
+      top_canvas.config(bg = 'red')
+    else:
+      top_canvas.config(bg = 'orange')
+      top_canvas.move(player, 5, 0)
+
+
+  elif left_map_check == True:
+    playerX, playerY = left_canvas.coords(player)
+    right = playerX + 16
+    if right > 410:
+      cent_map.tkraise()
+      canvas.moveto(player, 0, playerY)
+      cent_map_check = True
+      left_map_check = False
+    else:
+      left_canvas.config(bg = 'purple')
+      left_canvas.move(player, 5, 0)
+  elif down_map_check == True:
+    playerX, playerY = down_canvas.coords(player)
+    right = playerX + 16
+    if right > 410:
+      down_canvas.config(bg = 'red')
+    else:
+      down_canvas.config(bg = 'light blue')
+      down_canvas.move(player, 5, 0)
+  elif right_map_check == True:
+    playerX, playerY = right_canvas.coords(player)
+    right = playerX + 16
+    if right > 410:
+      final_map.tkraise()
+      final_canvas.moveto(player, 0, playerY)
+      final_map_check = True
+      right_map_check = False
+    else:
+      right_canvas.config(bg = 'pink')
+      right_canvas.move(player, 5, 0)
+  elif final_map_check == True:
+    playerX, playerY = final_canvas.coords(player)
+    right = playerX + 16
+    if right > 410:
+      final_canvas.config(bg = 'black')
+    else:
+      final_canvas.config(bg = 'black')
+      final_canvas.move(player, 5, 0)
+      
+def up(event):
+  global cent_map_check, top_map_check, left_map_check, down_map_check, right_map_check, final_map_check
+  if cent_map_check == True:
+    playerX, playerY = canvas.coords(player)
+    up = playerY - 16
+    if up <= 0:
+      top_map.tkraise()
+      top_canvas.moveto(player, playerX, 280)
+      cent_map_check = False
+      top_map_check = True
+    elif cent_map_check == True:
+      canvas.config(bg = 'Dark Green')
+      canvas.move(player, 0, -5)
+      
+  elif top_map_check == True:
+    playerX, playerY = top_canvas.coords(player)
+    top_up = playerY - 16
+    if top_up < 0:
+      top_canvas.config(bg = 'red')
+    else:
+      top_canvas.config(bg = 'orange')
+      top_canvas.move(player, 0, -5)
+  
+
+
+  elif left_map_check == True:
+    playerX, playerY = left_canvas.coords(player)
+    up = playerY - 16
+    if up < 0:
+      left_canvas.config(bg = 'red')
+    else:
+      left_canvas.config(bg = 'purple')
+      left_canvas.move(player, 0, -5)
+  elif down_map_check == True:
+    playerX, playerY = down_canvas.coords(player)
+    up = playerY - 16
+    if up < 0:
+      cent_map.tkraise()
+      canvas.moveto(player, playerX, 290)
+      cent_map_check = True
+      down_map_check = False
+    else:
+      down_canvas.config(bg = 'light blue')
+      down_canvas.move(player, 0, -5)
+  elif right_map_check == True:
+    playerX, playerY = right_canvas.coords(player)
+    up = playerY - 16
+    if up < 0:
+      right_canvas.config(bg = 'red')
+    else:
+      right_canvas.config(bg = 'pink')
+      right_canvas.move(player, 0, -5)
+  elif final_map_check == True:
+    playerX, playerY = final_canvas.coords(player)
+    up = playerY - 16
+    if up < 0:
+      final_canvas.config(bg = 'black')
+    else:
+      final_canvas.config(bg = 'black')
+      final_canvas.move(player, 0, -5)
+def down(event):
+  global cent_map_check, top_map_check, left_map_check, down_map_check, right_map_check, final_map_check
+  if cent_map_check == True:
+    playerX, playerY = canvas.coords(player)
+    down = playerY + 16
+    if down > 300:
+      down_map.tkraise()
+      down_canvas.moveto(player, playerX, 0)
+      cent_map_check = False
+      down_map_check = True
+    else:
+      canvas.config(bg = 'dark green')
+      canvas.move(player, 0, 5)
+
+  elif top_map_check == True:
+    playerX, playerY = top_canvas.coords(player)
+    top_down = playerY + 16
+    if top_down > 300:
+      cent_map.tkraise()
+      canvas.moveto(player, playerX, 10)
+      cent_map_check = True
+      top_map_check = False
+    else:
+      top_canvas.config(bg = 'orange')
+      top_canvas.move(player, 0, +5)
+
+  elif left_map_check == True:
+    playerX, playerY = left_canvas.coords(player)
+    down = playerY + 16
+    if down > 300:
+      left_canvas.config(bg = 'red')
+    else:
+      left_canvas.config(bg = 'purple')
+      left_canvas.move(player, 0, 5)
+  elif down_map_check == True:
+    playerX, playerY = down_canvas.coords(player)
+    down = playerY + 16
+    if down > 300:
+      down_canvas.config(bg = 'red')
+    else:
+      down_canvas.config(bg = 'light blue')
+      down_canvas.move(player, 0, 5)
+  elif right_map_check == True:
+    playerX, playerY = right_canvas.coords(player)
+    down = playerY + 16
+    if down > 300:
+      right_canvas.config(bg = 'red')
+    else:
+      right_canvas.config(bg = 'pink')
+      right_canvas.move(player, 0, 5)
+  elif final_map_check == True:
+    playerX, playerY = final_canvas.coords(player)
+    down = playerY + 16
+    if down > 300:
+      final_canvas.config(bg = 'black')
+    else:
+      final_canvas.config(bg = 'black')
+      final_canvas.move(player, 0, 5)
+name_entry = tkinter.Entry(intro)
+name_entry.place(x = 90, y = 320, 
+                 width = 250, height = 50)
+name_entry.bind('<Return>', start)
+
+
+#### CONTROLLERS ####
+start = tkinter.Button(start_button, text = 'Start Game - The Mission', command = intro.tkraise)
+start.place(x = 100, y = 170,
+            width = 200, height = 50)
+#### VIEW ####
+#INTRO FRAME
+intro_img = tkinter.Label(intro, text = "Boss! There you are. Our ship is in danger. We've been attacked by a nearby alien ship. Our crew is held hostage in a lower sector of our ship. You need to destroy the alien ship. They'll have no choice but surrender to us if you do.......Boss, they're looking for you now. You need to change your name for the time being. Goodluck", fg = 'white', bg = 'blue', wraplength = 200, justify = 'center')
+intro_img.place(x = 100, y = 10,
+               width = 200, height = 300)
+
+# instructions = tkinter.Label(intro, text = 'Enter your name to start the game', fg = 'white', bg = 'blue')
+# instructions.place(x = 65, y = 250,
+#                    width = 300, height = 50)
+
+#MAP FRAME 
+# map_instructions = tkinter.Label(intro, text = 'WASD controls to move.', fg = 'white', bg = 'blue')
+# map_instructions.place(x = 110, y = 220,
+#                        width = 200, height = 50)
+
+canvas = tkinter.Canvas(cent_map, bg = 'dark green')
+canvas.place(x = 10, y = 10,
+             width = 410, height = 300)
+
+player = canvas.create_image(205, 150, image = user)
+
+
+top_canvas = tkinter.Canvas(top_map, bg = 'orange')
+top_canvas.place(x = 10, y = 10,
+                 width = 410, height = 300)
+player = top_canvas.create_image(150, 280, image = user)
+
+left_canvas = tkinter.Canvas(left_map, bg = 'purple')
+left_canvas.place(x = 10, y = 10,
+                  width = 410, height = 300)
+
+
+player = left_canvas.create_image(410, 200, image = user)
+terminal_img = left_canvas.create_image(100, 150, image = terminal)
+
+
+down_canvas = tkinter.Canvas(down_map, bg = 'light blue')
+down_canvas.place(x = 10, y = 10, 
+                  width = 410, height = 300)
+
+player = down_canvas.create_image(200, 0, image = user)
+
+right_canvas = tkinter.Canvas(right_map, bg = 'pink')
+right_canvas.place(x = 10, y = 10,
+                   width = 410, height = 300)
+
+player = right_canvas.create_image(200, 0, image = user)
+
+final_canvas = tkinter.Canvas(final_map, bg = 'black')
+final_canvas.place(x = 10, y = 10,
+                   width = 410, height = 300)
+
+player = final_canvas.create_image(0, 0, image = user)
+
+
+
+
+root.bind('<a>', left)
+root.bind('<d>', right)
+root.bind('<w>', up)
+root.bind('<s>', down)
+
+root.mainloop()
